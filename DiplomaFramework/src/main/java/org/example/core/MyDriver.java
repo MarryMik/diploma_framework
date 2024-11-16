@@ -1,11 +1,12 @@
 package org.example.core;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 
+import java.io.File;
 import java.time.Duration;
 
 import static org.example.core.WebDriverInstance.driverInstance;
@@ -39,7 +40,7 @@ public class MyDriver {
     public void click(String locator, String browserName){
         WebDriver driver = getDriver(browserName);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.id(locator)));
         log.info("Click on the element('"+locator+"') in the "+browserName+" browser");
         element.click();
     }
@@ -47,7 +48,7 @@ public class MyDriver {
     public void sendKeys(String locator, String text, String browserName){
         WebDriver driver = getDriver(browserName);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.id(locator)));
         log.info("Populate element('"+locator+"') with text: "+text.trim()+"in the "+browserName+" browser");
         element.sendKeys(text.trim());
     }

@@ -2,68 +2,86 @@ package org.example.models;
 
 public class UserInfo {
 
-//    private String productName;
-//    private String productPrice;
-//    private String productColor;
-//    private String productDiagonal;
-//    private String screenResolution;
-//    private String processor;
-//    private String productDescription;
-//
-//    public String getProductName() {
-//        return productName;
-//    }
-//
-//    public void setProductName(String productName) {
-//        this.productName = productName;
-//    }
-//
-//    public String getProductPrice() {
-//        return productPrice;
-//    }
-//
-//    public void setProductPrice(String productPrice) {
-//        this.productPrice = productPrice;
-//    }
-//
-//    public String getProductColor() {
-//        return productColor;
-//    }
-//
-//    public void setProductColor(String productColor) {
-//        this.productColor = productColor;
-//    }
-//
-//    public String getProductDiagonal() {
-//        return productDiagonal;
-//    }
-//
-//    public void setProductDiagonal(String productDiagonal) {
-//        this.productDiagonal = productDiagonal;
-//    }
-//
-//    public String getScreenResolution() {
-//        return screenResolution;
-//    }
-//
-//    public void setScreenResolution(String screenResolution) {
-//        this.screenResolution = screenResolution;
-//    }
-//
-//    public String getProcessor() {
-//        return processor;
-//    }
-//
-//    public void setProcessor(String processor) {
-//        this.processor = processor;
-//    }
-//
-//    public String getProductDescription() {
-//        return productDescription;
-//    }
-//
-//
-//    public void setProductDescription(String productDescription) {
-//        this.productDescription = productDescription;
-//    }
+    private String userName;
+    private String email;
+    private String userPhone;
+    private String birthDate;
+    private String gender;
+    private String userType;
+    private String address;
+    private String speciality;
+    private String password;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String productName) {
+        this.userName = userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

@@ -31,24 +31,18 @@ public class MainPage extends BasePage{
     private final String exitButtonDocId = "exit_doc_button";
     private final String accessesPageLinkId = "accesses_page_link";
 
-
     public MainPage(){}
+
+    public void openRequestPage(){
+        driver.findElement(By.id(requestPageLinkId)).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("http://localhost:3000/request_page"));
+    }
 
     public void openLoginPage(){
         driver.findElement(By.id(loginPageButtonId)).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("http://localhost:3000/login"));
-    }
-
-    public void openRegisterPage(){
-        driver.findElement(By.id(registerPageButtonId)).click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("http://localhost:3000/register"));
-    }
-    public void openRequestPage(){
-        driver.findElement(By.id(requestPageLinkId)).click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("http://localhost:3000/request_page"));
     }
 
     public void hoverLogo(){

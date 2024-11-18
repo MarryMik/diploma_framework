@@ -18,18 +18,6 @@ public class MainPage extends BasePage{
     private final String loginPageButtonId ="login_button_link";
     private final String registerPageButtonId ="register_button_link";
     private final String logoId ="logo";
-    //
-    private final String diaryPageLinkId = "diary_page_link";
-    private  final String brushingPageLinkId = "brushing_page_link";
-    private final String symptomsPageLinkId = "symptoms_page_link";
-    private final String givingAccessPageLinkId = "giving_access_page_link";
-    private final String accountPageLinkId = "account_page_link";
-    private final String exitButtonId = "exit_button";
-    private final String requestPageLinkId2 = "request_page_link2";
-    //
-    private final String accountPageDocLinkId = "account_page_doc_link";
-    private final String exitButtonDocId = "exit_doc_button";
-    private final String accessesPageLinkId = "accesses_page_link";
 
     public MainPage(){}
 

@@ -26,6 +26,7 @@ public class RegisterPage extends BasePage{
     private final String confirmPasswordInputId = "confirmPasswordInput";
     private final String createButtonId = "createButton";
     private final String loginPageButtonId ="login_button_link";
+    private final String homePageLinkId ="home_page_link";
 
     IProductInfoReader fileReader = new JsonFileReader();
     UserInfo userPatientInfo = fileReader.readUserInfo("src/test/java/testdata/jsonfiles/userPatientTestData.json");
@@ -79,6 +80,12 @@ public class RegisterPage extends BasePage{
         driver.findElement(By.id(loginPageButtonId)).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("http://localhost:3000/login"));
+    }
+
+    public void openMainPage(){
+        driver.findElement(By.id(homePageLinkId)).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("http://localhost:3000/"));
     }
 
 }

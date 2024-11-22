@@ -1,7 +1,7 @@
 package org.example.pages;
 
 import org.example.models.UserInfo;
-import org.example.utils.IProductInfoReader;
+import org.example.utils.IUserInfoReader;
 import org.example.utils.JsonFileReader;
 import org.openqa.selenium.By;
 
@@ -11,7 +11,7 @@ public class LoginPage extends BasePage{
     private final String passwordInputId = "passwordInput";
     private final String loginButtonId = "loginButton";
 
-    IProductInfoReader fileReader = new JsonFileReader();
+    IUserInfoReader fileReader = new JsonFileReader();
     UserInfo userPatientInfo = fileReader.readUserInfo("src/test/java/testdata/jsonfiles/userPatientTestData.json");
     UserInfo userDoctorInfo = fileReader.readUserInfo("src/test/java/testdata/jsonfiles/userDoctorTestData.json");
 

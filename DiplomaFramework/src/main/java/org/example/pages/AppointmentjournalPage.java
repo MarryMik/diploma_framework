@@ -1,7 +1,7 @@
 package org.example.pages;
 
 import org.example.models.UserInfo;
-import org.example.utils.IProductInfoReader;
+import org.example.utils.IUserInfoReader;
 import org.example.utils.JsonFileReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,7 +17,7 @@ public class AppointmentjournalPage extends BasePage{
     private final String procedureAppointInputId = "procedure_appoint_input";
     private final String commentAppointInputId = "comment_appoint_input";
 
-    IProductInfoReader fileReader = new JsonFileReader();
+    IUserInfoReader fileReader = new JsonFileReader();
     UserInfo userPatientInfo = fileReader.readUserInfo("src/test/java/testdata/jsonfiles/userPatientTestData.json");
 
     public AppointmentjournalPage() {}

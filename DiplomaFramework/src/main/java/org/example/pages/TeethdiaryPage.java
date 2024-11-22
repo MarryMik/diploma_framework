@@ -1,7 +1,7 @@
 package org.example.pages;
 
 import org.example.models.UserInfo;
-import org.example.utils.IProductInfoReader;
+import org.example.utils.IUserInfoReader;
 import org.example.utils.JsonFileReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -29,7 +29,7 @@ public class TeethdiaryPage extends BasePage{
     private final String procedureFilePageButtonXpath ="//div[@class=\"procedure-card\"]/button[@class=\"procedure-card__file-img\"]";
 
 
-    IProductInfoReader fileReader = new JsonFileReader();
+    IUserInfoReader fileReader = new JsonFileReader();
     UserInfo userDoctorInfo = fileReader.readUserInfo("src/test/java/testdata/jsonfiles/userDoctorTestData.json");
 
     public TeethdiaryPage() {}

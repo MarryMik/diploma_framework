@@ -7,7 +7,7 @@ import org.example.models.UserInfo;
 import java.io.File;
 import java.io.IOException;
 
-public class JsonFileReader implements IProductInfoReader{
+public class JsonFileReader implements IUserInfoReader{
     private static final Logger log = Logger.getLogger(JsonFileReader.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 

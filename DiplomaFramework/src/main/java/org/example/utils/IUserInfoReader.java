@@ -1,8 +1,6 @@
 package org.example.utils;
-
 import org.example.models.UserInfo;
 
-
-public interface IProductInfoReader {
+public interface IUserInfoReader {
     public UserInfo readUserInfo(String source);
 }

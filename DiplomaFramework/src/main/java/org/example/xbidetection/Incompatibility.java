@@ -14,22 +14,27 @@ public class Incompatibility {
     }
 
     public WebElement getWebElement(){
-        return detectedDifference.getWebElement();
+        return detectedDifference.getTestWebElement();
     }
 
     public String getFilePath(){
-        return detectedDifference.getVisDiff().getScreenshot().getPath();
+        return detectedDifference.getVisDiff().getTestScreenshot().getPath();
     }
 
-    public String getTypeXBI(){
-        return detectedDifference.getType();
+    public String getFilePathScreenshot2(){
+        return detectedDifference.getVisDiff().getPathToNewScreenshot();
     }
+
+
+//    public String getTypeXBI(){
+//
+//    }
 
     public String getBrowserName(){
-        return detectedDifference.getVisDiff().getScreenshot().getBrowserName();
+        return detectedDifference.getVisDiff().getTestScreenshot().getBrowserName();
     }
 
     public String getPageName(){
-        return detectedDifference.getVisDiff().getScreenshot().getPageName();
+        return detectedDifference.getVisDiff().getTestScreenshot().getPageName();
     }
 }

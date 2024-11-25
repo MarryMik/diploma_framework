@@ -9,99 +9,77 @@ public class DOMdifference {
     private VisualDifference visDiff;
     private WebElement testElement;
     private WebElement baselineElement;
+    private String category;
 
-    public DOMdifference(VisualDifference visDiff, WebElement webElement) {
+    public DOMdifference(VisualDifference visDiff, WebElement webElement, String category) {
         this.visDiff = visDiff;
         this.testElement = webElement;
+        this.category = category;
     }
 
-    private void findDriverAndXpathes(){
+    private void findDriverAndXpathes() {
         WebDriver baselineDriver = visDiff.getBaselineScreenshot().getDriver();
         String xpath = getXPath(testElement);
         this.baselineElement = baselineDriver.findElement(By.xpath(xpath));
     }
 
+    private Incompatibility createIncompatibility(String type, String details) {
+        Incompatibility i = new Incompatibility(type, details);
+        i.setDetectedDifference(this);
+        return i;
+    }
+
     private List<Incompatibility> compareVisibility() {
         List<Incompatibility> issues = new ArrayList<>();
-
-            if (!baselineElement.isDisplayed() && testElement.isDisplayed()) {
-                 //"Visibility Difference"+"Element visible in test browser but not in baseline browser.";
-                issues.add(new Incompatibility(this));
-            } else if (baselineElement.isDisplayed() && !testElement.isDisplayed()) {
-                 //"Visibility Difference" + "Element visible in baseline browser but not in test browser.";
-                issues.add(new Incompatibility(this));
-            }
+        String type = "Visibility Difference";
+        if (!baselineElement.isDisplayed() && testElement.isDisplayed()) {
+            issues.add(createIncompatibility(type, "Element visible in test browser but not in baseline browser."));
+        } else if (baselineElement.isDisplayed() && !testElement.isDisplayed()) {
+            issues.add(createIncompatibility(type, "Element visible in baseline browser but not in test browser."));
+        }
         return issues;
     }
 
+
     private List<Incompatibility> comparePositionAndSize() {
         List<Incompatibility> issues = new ArrayList<>();
-
-        try {
-                Rectangle baselineRect = baselineElement.getRect();
-                Rectangle testRect = testElement.getRect();
-
-                // Position comparison
-                int deltaX = Math.abs(baselineRect.x - testRect.x);
-                int deltaY = Math.abs(baselineRect.y - testRect.y);
-                if (deltaX > 40 || deltaY > 40) {
-                    //  "Position Difference"+"Baseline: (" + baselineRect.x + "," + baselineRect.y + "), Test: (" + testRect.x + "," + testRect.y + ")";
-                    issues.add(new Incompatibility(this));
-                }
-
-                // Size comparison
-                int deltaWidth = Math.abs(baselineRect.width - testRect.width);
-                int deltaHeight = Math.abs(baselineRect.height - testRect.height);
-                if (deltaWidth > 15 || deltaHeight > 15) {
-//                     "Size Difference"+
-//                            "Baseline: " + baselineRect.width + "x" + baselineRect.height +
-//                                    ", Test: " + testRect.width + "x" + testRect.height;
-                    issues.add(new Incompatibility(this));
-                }
-        } catch (NoSuchElementException e) {
-            // "Position/Size Difference"+"Element missing in test browser.";
-            issues.add(new Incompatibility(this));
+        Rectangle baselineRect = baselineElement.getRect();
+        Rectangle testRect = testElement.getRect();
+        // Position comparison
+        int deltaX = Math.abs(baselineRect.x - testRect.x);
+        int deltaY = Math.abs(baselineRect.y - testRect.y);
+        if (deltaX > 40 || deltaY > 40) {
+            issues.add(createIncompatibility("Position Difference", "Baseline: (" + baselineRect.x + "," + baselineRect.y + "), Test: (" + testRect.x + "," + testRect.y + ")"));
+        }
+        // Size comparison
+        int deltaWidth = Math.abs(baselineRect.width - testRect.width);
+        int deltaHeight = Math.abs(baselineRect.height - testRect.height);
+        if (deltaWidth > 15 || deltaHeight > 15) {
+            issues.add(createIncompatibility("Size Difference", "Baseline: " + baselineRect.width + "x" + baselineRect.height + ", Test: " + testRect.width + "x" + testRect.height));
         }
         return issues;
-
     }
 
     private List<Incompatibility> compareAppearance() {
         List<Incompatibility> issues = new ArrayList<>();
-            try {
-                // Compare color
-                String baselineColor = baselineElement.getCssValue("color");
-                String testColor = testElement.getCssValue("color");
-                if (!baselineColor.equals(testColor)) {
-//                     "Appearance Difference"+
-//                            "Color mismatch. Baseline: " + baselineColor + ", Test: " + testColor;
-                    issues.add(new Incompatibility(this));
-                }
-
-                // Compare font properties
-                String baselineFont = baselineElement.getCssValue("font");
-                String testFont = testElement.getCssValue("font");
-                if (!baselineFont.equals(testFont)) {
-//                     "Appearance Difference"+
-//                            "Font mismatch. Baseline: " + baselineFont + ", Test: " + testFont;
-                    issues.add(new Incompatibility(this));
-                }
-
-                // Compare content
-                String baselineText = baselineElement.getText();
-                String testText = testElement.getText();
-                if (!baselineText.equals(testText)) {
-//                     "Content Difference"+
-//                            "Content mismatch. Baseline: \"" + baselineText + "\", Test: \"" + testText + "\"";
-                    issues.add(new Incompatibility(this));
-                }
-            } catch (NoSuchElementException e) {
-//                 "Appearance Difference"+
-//                        "Element missing in test browser.";
-                issues.add(new Incompatibility(this));
-            }
-
-
+        // Compare color
+        String baselineColor = baselineElement.getCssValue("color");
+        String testColor = testElement.getCssValue("color");
+        if (!baselineColor.equals(testColor)) {
+            issues.add(createIncompatibility("Appearance Difference", "Color mismatch. Baseline: " + baselineColor + ", Test: " + testColor));
+        }
+        // Compare font properties
+        String baselineFont = baselineElement.getCssValue("font");
+        String testFont = testElement.getCssValue("font");
+        if (!baselineFont.equals(testFont)) {
+            issues.add(createIncompatibility("Appearance Difference", "Font mismatch. Baseline: " + baselineFont + ", Test: " + testFont));
+        }
+        // Compare content
+        String baselineText = baselineElement.getText();
+        String testText = testElement.getText();
+        if (!baselineText.equals(testText)) {
+            issues.add(createIncompatibility("Content Difference",  "Content mismatch. Baseline: \"" + baselineText + "\", Test: \"" + testText + "\""));
+        }
         return issues;
     }
 
@@ -160,22 +138,22 @@ public class DOMdifference {
     }
 
 
-
-   public List<Incompatibility> detectXBI(){
-       findDriverAndXpathes();
-       List<Incompatibility> issues = new ArrayList<>();
-       if(this.testElement != null) {
-           Incompatibility noElem = new Incompatibility(this);
-           issues.add(noElem);
-       }else {
-           List<Incompatibility> visibilityIssues = compareVisibility();
-           List<Incompatibility> positionAndSizeIssues = comparePositionAndSize();
-           List<Incompatibility> appearanceIssues = compareAppearance();
-           issues.addAll(visibilityIssues);
-           issues.addAll(positionAndSizeIssues);
-           issues.addAll(appearanceIssues);
-       }
-       return issues;
+    public List<Incompatibility> detectXBI() {
+        findDriverAndXpathes();
+        List<Incompatibility> issues = new ArrayList<>();
+        if (this.testElement != null) {
+            Incompatibility noElem = new Incompatibility("Not existing element");
+            noElem.setDetectedDifference(this);
+            issues.add(noElem);
+        } else {
+            List<Incompatibility> visibilityIssues = compareVisibility();
+            List<Incompatibility> positionAndSizeIssues = comparePositionAndSize();
+            List<Incompatibility> appearanceIssues = compareAppearance();
+            if(!visibilityIssues.isEmpty()){issues.addAll(visibilityIssues);}
+            if(!positionAndSizeIssues.isEmpty()){issues.addAll(positionAndSizeIssues);}
+            if(!appearanceIssues.isEmpty()){issues.addAll(appearanceIssues);}
+        }
+        return issues;
     }
 
     public WebElement getTestWebElement() {
@@ -190,4 +168,7 @@ public class DOMdifference {
         return visDiff;
     }
 
+    public String getCategory(){
+        return category;
+    }
 }

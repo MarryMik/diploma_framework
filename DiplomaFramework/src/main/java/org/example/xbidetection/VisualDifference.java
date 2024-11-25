@@ -20,6 +20,7 @@ public class VisualDifference {
     private String pathToNewScreenshot;
 
 
+
     public VisualDifference(Screenshot testScreenshot, Screenshot baseScreenshot, Rect boundingBox) {
         this.testScreenshot = testScreenshot;
         this.baseScreenshot = baseScreenshot;
@@ -95,11 +96,8 @@ public class VisualDifference {
             elementDescription = "element is not found";
         }
 
-        // Draw bounding box on the original image
         drawCMD(outputDiffPath);
-
-        //DOMDifference
-        DOMdifference domDiff = new DOMdifference(this,element);
+        DOMdifference domDiff = new DOMdifference(this,element, category);
         return domDiff;
     }
 

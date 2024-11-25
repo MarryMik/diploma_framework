@@ -1,5 +1,6 @@
 package org.example.xbidetection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Comparison {
@@ -44,6 +45,12 @@ public class Comparison {
     public void addBaselineScreenshot(Screenshot baselineScreenshot) {
         baselineScreenshots.add(baselineScreenshot);
     }
-//    public List<VisualDifference> compare(){
-//    }
+
+   public List<VisualDifference> compare(){
+        List<VisualDifference> differences = new ArrayList<VisualDifference>();
+        for(int i =0; i < testScreenshots.size(); i++){
+            differences.addAll(testScreenshots.get(i).detectCBD(baselineScreenshots.get(i)));
+        }
+        return differences;
+   }
 }

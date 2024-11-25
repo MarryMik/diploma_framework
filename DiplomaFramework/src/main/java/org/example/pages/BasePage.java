@@ -41,4 +41,8 @@ public class BasePage {
         Capabilities capabilities = ((RemoteWebDriver) this.driver).getCapabilities();
         return capabilities.getBrowserName();
     }
+
+    public void detectIncompatibilities(){
+        //////....
+    }
 }

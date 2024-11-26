@@ -1,5 +1,6 @@
 package org.example.steps;
 import org.example.pages.*;
+import org.openqa.selenium.WebDriver;
 
 public class BaseSteps {
     protected AccessesPage accessesPage;
@@ -17,6 +18,7 @@ public class BaseSteps {
     protected SimptomdiaryPage simptomdiaryPage;
     protected TeethdiaryPage teethdiaryPage;
     protected TreatmentPage treatmentPage;
+    protected WebDriver driver;
 
     public BaseSteps() {
         accessesPage = new AccessesPage();
@@ -34,6 +36,24 @@ public class BaseSteps {
         simptomdiaryPage = new SimptomdiaryPage();
         teethdiaryPage = new TeethdiaryPage();
         treatmentPage = new TreatmentPage();
+    }
+    public void setDriver(WebDriver driver) {
+        this.driver = driver;
+        accessesPage.setDriver(driver);
+        accountPage.setDriver(driver);
+        appointmentjournalPage.setDriver(driver);
+        brushdiaryPage.setDriver(driver);
+        brushingdiaryPage.setDriver(driver);
+        givingaccessesPage.setDriver(driver);
+        loginPage.setDriver(driver);
+        mainPage.setDriver(driver);
+        procedurePage.setDriver(driver);
+        recordPage.setDriver(driver);
+        registerPage.setDriver(driver);
+        requestPage.setDriver(driver);
+        simptomdiaryPage.setDriver(driver);
+        teethdiaryPage.setDriver(driver);
+        treatmentPage.setDriver(driver);
     }
 
 }

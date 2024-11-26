@@ -22,7 +22,7 @@ public class AppointmentjournalPage extends BasePage{
 
     public AppointmentjournalPage() {}
 
-    public void openLoginPage(){
+    public void openAccessesPage(){
         driver.findElement(By.id(accessesPageLinkId)).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("http://localhost:3000/accesses"));

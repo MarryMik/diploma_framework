@@ -19,9 +19,11 @@ public class Report {
     private JSONObject report;
     private final String pathReport = "src/test/java/testdata/reports/report.json";
     private List<Incompatibility> incompatibilities;
+    private Integer number;
 
-    public Report(String name) {
+    public Report(String name) throws JSONException, IOException {
         this.name = name;
+        this.number = getNumberOfReport();
     }
 
     public String getName() {
@@ -70,8 +72,7 @@ public class Report {
         }
     }
 
-    private void createReport() throws JSONException, IOException {
-        int number = getNumberOfReport();
+    public void createReport() throws JSONException, IOException {
         report.put(number+"-Звіт", name);
         LocalDateTime currentDateTime = LocalDateTime.now();
         report.put("Дата і час", currentDateTime);
@@ -102,6 +103,10 @@ public class Report {
         incompatibilities.add(i);
     }
 
+    public void addIncompatibilities(List<Incompatibility> list){
+        incompatibilities.addAll(list);
+    }
+
 
     public List<Incompatibility> getIncompatibilities() {
         return incompatibilities;
@@ -113,5 +118,9 @@ public class Report {
 
     public JSONObject getReport() {
         return report;
+    }
+
+    public Integer getNumber() {
+        return number;
     }
 }

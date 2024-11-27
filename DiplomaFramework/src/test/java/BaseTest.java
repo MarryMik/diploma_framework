@@ -34,12 +34,13 @@ public class BaseTest {
 
     @BeforeEach
     public void setUp() {
-        driver1 = WebDriverFactory.getWebDriver("chrome");
-        driverInstance().setDriver1(driver1);
+
         driver2 = WebDriverFactory.getWebDriver("firefox");
         driverInstance().setDriver2(driver2);
         driver3 = WebDriverFactory.getWebDriver("edge");
         driverInstance().setDriver3(driver3);
+        driver1 = WebDriverFactory.getWebDriver("chrome");
+        driverInstance().setDriver1(driver1);
 
         //init pages
         accessesPage = new AccessesPage();

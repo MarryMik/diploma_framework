@@ -1,0 +1,15 @@
+[{
+    "0-Звіт": "All pages XBI detection",
+    "incomes": {
+        "Браузер": {
+            "версія": "133.0",
+            "назва": "firefox"
+        },
+        "Візуальна різниця": "Large Layout Issue",
+        "Скріншоти": {"скріншот сторінки": "src/test/java/testdata/reports/files/mainpage/0_FF_testing.png"},
+        "Сторінка": "mainpage",
+        "Тип": "Not existing element"
+    },
+    "Дата і час": "2024-11-27T09:55:36.199215300",
+    "Несумісності": 527
+}]

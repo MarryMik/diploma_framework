@@ -89,14 +89,14 @@ public class VisualDifference {
         WebElement element = identifyWebElement();
 
         //add Log!
-        String elementDescription;
-        if(element == null){
-            elementDescription = element.getTagName() + " (" + element.getText() + ")";
-        }else{
-            elementDescription = "element is not found";
-        }
+//        String elementDescription;
+//        if(element != null){
+//            elementDescription = element.getTagName() + " (" + element.getText() + ")";
+//        }else{
+//            elementDescription = "element is not found";
+//        }
 
-        drawCMD(outputDiffPath);
+        //drawCMD(outputDiffPath);
         DOMdifference domDiff = new DOMdifference(this,element, category);
         return domDiff;
     }

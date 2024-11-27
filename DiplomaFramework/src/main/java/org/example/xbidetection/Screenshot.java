@@ -1,5 +1,6 @@
 package org.example.xbidetection;
 
+import nu.pattern.OpenCV;
 import org.opencv.core.*;
 
 import java.io.File;
@@ -16,7 +17,8 @@ import org.openqa.selenium.WebElement;
 
 public class Screenshot {
     static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        OpenCV.loadLocally();
     }
 
     private final String path;
@@ -145,6 +147,14 @@ public class Screenshot {
     public List<VisualDifference> detectCBD(Screenshot scr2){
         Mat baselineImage = Imgcodecs.imread(scr2.getPath());
         Mat testImage = Imgcodecs.imread(path);
+        int minHeight = Math.min(baselineImage.height(), testImage.height());
+        int minWidth = Math.min(baselineImage.width(), testImage.width());
+        Rect cropRect = new Rect(0, 0, minWidth, minHeight);
+        if(baselineImage.rows()<testImage.rows()){
+            testImage = testImage.submat(cropRect);
+        }else{
+            baselineImage = baselineImage.submat(cropRect);
+        }
 
         // Convert to grayscale
         Mat baselineGray = new Mat();

@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Report {
@@ -24,6 +25,8 @@ public class Report {
     public Report(String name) throws JSONException, IOException {
         this.name = name;
         this.number = getNumberOfReport();
+        incompatibilities = new ArrayList<>();
+        report = new JSONObject();
     }
 
     public String getName() {

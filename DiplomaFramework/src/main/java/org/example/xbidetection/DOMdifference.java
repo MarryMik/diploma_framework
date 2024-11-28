@@ -95,86 +95,90 @@ public class DOMdifference {
 
     private String getXPath(WebElement element, WebDriver driver) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
+//        String xpath = (String) js.executeScript(
+//                "function getXPath(element) {" +
+//                        "    if (element.id !== '' || element.id !== undefined || element.id !== null) {" +
+//                        "        return 'id(\"' + element.id + '\")';" +
+//                        "    }" +
+//                        "    if (element === document.body) {" +
+//                        "        return element.tagName;" +
+//                        "    }" +
+//                        "    var ix = 0;" +
+//                        "    var siblings = element.parentNode.childNodes;" +
+//                        "    for (var i = 0; i < siblings.length; i++) {" +
+//                        "        var sibling = siblings[i];" +
+//                        "        if (sibling === element) {" +
+//                        "            return getXPath(element.parentNode) + '/' + element.tagName + '[' + (ix + 1) + ']';" +
+//                        "        }" +
+//                        "        if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {" +
+//                        "            ix++;" +
+//                        "        }" +
+//                        "    }" +
+//                        "} return getXPath(arguments[0]);", element);
+//        System.out.println("xpath: "+xpath);
+//        return xpath;
+//        JavascriptExecutor jsExecutor = (JavascriptExecutor) ((WrapsDriver) element).getWrappedDriver();
         String xpath = (String) js.executeScript(
-                "function getXPath(element) {" +
-                        "    if (element.id !== '') {" +
-                        "        return 'id(\"' + element.id + '\")';" +
-                        "    }" +
-                        "    if (element === document.body) {" +
-                        "        return element.tagName;" +
-                        "    }" +
-                        "    var ix = 0;" +
-                        "    var siblings = element.parentNode.childNodes;" +
-                        "    for (var i = 0; i < siblings.length; i++) {" +
-                        "        var sibling = siblings[i];" +
-                        "        if (sibling === element) {" +
-                        "            return getXPath(element.parentNode) + '/' + element.tagName + '[' + (ix + 1) + ']';" +
-                        "        }" +
-                        "        if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {" +
-                        "            ix++;" +
-                        "        }" +
-                        "    }" +
-                        "} return getXPath(arguments[0]);", element);
+                "function absoluteXPath(element) {" +
+                        "var comp, comps = [];" +
+                        "var parent = null;" +
+                        "var xpath = '';" +
+                        "var getPos = function(element) {" +
+                        "var position = 1, curNode;" +
+                        "if (element.nodeType == Node.ATTRIBUTE_NODE) {" +
+                        "return null;" +
+                        "}" +
+                        "for (curNode = element.previousSibling; curNode; curNode = curNode.previousSibling) {" +
+                        "if (curNode.nodeName == element.nodeName) {" +
+                        "++position;" +
+                        "}" +
+                        "}" +
+                        "return position;" +
+                        "};" +
+                        "if (element instanceof Document) {" +
+                        "return '/';" +
+                        "}" +
+                        "for (; element && !(element instanceof Document); element = element.nodeType == Node.ATTRIBUTE_NODE ? element.ownerElement : element.parentNode) {" +
+                        "comp = comps[comps.length] = {};" +
+                        "switch (element.nodeType) {" +
+                        "case Node.TEXT_NODE:" +
+                        "comp.name = 'text()';" +
+                        "break;" +
+                        "case Node.ATTRIBUTE_NODE:" +
+                        "comp.name = '@' + element.nodeName;" +
+                        "break;" +
+                        "case Node.PROCESSING_INSTRUCTION_NODE:" +
+                        "comp.name = 'processing-instruction()';" +
+                        "break;" +
+                        "case Node.COMMENT_NODE:" +
+                        "comp.name = 'comment()';" +
+                        "break;" +
+                        "case Node.ELEMENT_NODE:" +
+                        "comp.name = element.nodeName;" +
+                        "break;" +
+                        "}" +
+                        "comp.position = getPos(element);" +
+                        "}" +
+                        "for (var i = comps.length - 1; i >= 0; i--) {" +
+                        "comp = comps[i];" +
+                        "xpath += '/' + comp.name.toLowerCase();" +
+                        "if (comp.position !== null) {" +
+                        "xpath += '[' + comp.position + ']';" +
+                        "}" +
+                        "}" +
+                        "return xpath;" +
+                        "} return absoluteXPath(arguments[0]);", element);
         System.out.println("xpath: "+xpath);
         return xpath;
-//        JavascriptExecutor jsExecutor = (JavascriptExecutor) ((WrapsDriver) element).getWrappedDriver();
-//        return (String) jsExecutor.executeScript(
-//                "function absoluteXPath(element) {" +
-//                        "var comp, comps = [];" +
-//                        "var parent = null;" +
-//                        "var xpath = '';" +
-//                        "var getPos = function(element) {" +
-//                        "var position = 1, curNode;" +
-//                        "if (element.nodeType == Node.ATTRIBUTE_NODE) {" +
-//                        "return null;" +
-//                        "}" +
-//                        "for (curNode = element.previousSibling; curNode; curNode = curNode.previousSibling) {" +
-//                        "if (curNode.nodeName == element.nodeName) {" +
-//                        "++position;" +
-//                        "}" +
-//                        "}" +
-//                        "return position;" +
-//                        "};" +
-//                        "if (element instanceof Document) {" +
-//                        "return '/';" +
-//                        "}" +
-//                        "for (; element && !(element instanceof Document); element = element.nodeType == Node.ATTRIBUTE_NODE ? element.ownerElement : element.parentNode) {" +
-//                        "comp = comps[comps.length] = {};" +
-//                        "switch (element.nodeType) {" +
-//                        "case Node.TEXT_NODE:" +
-//                        "comp.name = 'text()';" +
-//                        "break;" +
-//                        "case Node.ATTRIBUTE_NODE:" +
-//                        "comp.name = '@' + element.nodeName;" +
-//                        "break;" +
-//                        "case Node.PROCESSING_INSTRUCTION_NODE:" +
-//                        "comp.name = 'processing-instruction()';" +
-//                        "break;" +
-//                        "case Node.COMMENT_NODE:" +
-//                        "comp.name = 'comment()';" +
-//                        "break;" +
-//                        "case Node.ELEMENT_NODE:" +
-//                        "comp.name = element.nodeName;" +
-//                        "break;" +
-//                        "}" +
-//                        "comp.position = getPos(element);" +
-//                        "}" +
-//                        "for (var i = comps.length - 1; i >= 0; i--) {" +
-//                        "comp = comps[i];" +
-//                        "xpath += '/' + comp.name.toLowerCase();" +
-//                        "if (comp.position !== null) {" +
-//                        "xpath += '[' + comp.position + ']';" +
-//                        "}" +
-//                        "}" +
-//                        "return xpath;" +
-//                        "} return absoluteXPath(arguments[0]);", element);
     }
 
 
     public List<Incompatibility> detectXBI() {
         findDriverAndXpathes();
         List<Incompatibility> issues = new ArrayList<>();
-        if (this.testElement == null|| this.baselineElement == null) {
+        if ((this.testElement == null && this.baselineElement != null) ||
+                (this.baselineElement == null && this.testElement != null) ||
+                (this.testElement == null && this.baselineElement == null)) {
             Incompatibility noElem = new Incompatibility("Not existing element");
             noElem.setDetectedDifference(this);
             issues.add(noElem);
@@ -186,6 +190,7 @@ public class DOMdifference {
             if(!positionAndSizeIssues.isEmpty()){issues.addAll(positionAndSizeIssues);}
             if(!appearanceIssues.isEmpty()){issues.addAll(appearanceIssues);}
         }
+        System.out.println("issues: "+issues.size());
         return issues;
     }
 

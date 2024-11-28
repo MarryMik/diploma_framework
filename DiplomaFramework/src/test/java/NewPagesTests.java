@@ -61,7 +61,7 @@ public class NewPagesTests extends BaseTest{
         comparison.setTestScreenshots(testingScreenshots);
         comparison.setBaselineScreenshots(baselineScreenshots);
         List <VisualDifference> visualDifferences = comparison.compare();
-
+        log.info("Vdiff size "+visualDifferences.size());
         log.info("Detect DOM differences");
         List <DOMdifference> doMdifferences = new ArrayList<>();
         int j =0;
@@ -73,12 +73,14 @@ public class NewPagesTests extends BaseTest{
             doMdifferences.add(domDiff);
             j++;
         }
+        log.info("DOM size "+doMdifferences.size());
         log.info("Detect incompatibilities");
         List <Incompatibility> incompatibilities = new ArrayList<>();
         for(DOMdifference domDifference : doMdifferences) {
             List <Incompatibility> i = domDifference.detectXBI();
             incompatibilities.addAll(i);
         }
+        log.info("size "+incompatibilities.size());
         log.info("create report");
         report.addIncompatibilities(incompatibilities);
         report.createReport();

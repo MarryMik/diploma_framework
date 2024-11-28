@@ -25,6 +25,7 @@ public class Screenshot {
     private final String pageName;
     private final String browserName;
     private final WebDriver driver;
+    private String size;
 
     public Screenshot(String path, String pageName, String browserName, WebDriver driver) {
         this.path = path;
@@ -155,7 +156,7 @@ public class Screenshot {
         }else{
             baselineImage = baselineImage.submat(cropRect);
         }
-
+        this.size = "("+minWidth+" x "+minHeight+")";
         // Convert to grayscale
         Mat baselineGray = new Mat();
         Mat testGray = new Mat();
@@ -186,6 +187,11 @@ public class Screenshot {
         }
         return visualDiffs;
     }
+
+    public String getSize() {
+        return size;
+    }
+
 
 //    public Screenshot processScreenshot(){
 //        File afterContrast = processContrast(new File(path));

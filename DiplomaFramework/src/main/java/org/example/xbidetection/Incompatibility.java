@@ -81,4 +81,14 @@ public class Incompatibility {
     public String getVisualDiffType(){
         return detectedDifference.getCategory();
     }
+
+    public String getBaselineBrowserName(){
+        return detectedDifference.getVisDiff().getBaselineScreenshot().getBrowserName();
+    }
+
+    public String getBaseLineBrowserVersion(){
+        WebDriver driver = detectedDifference.getVisDiff().getBaselineScreenshot().getDriver();
+        Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
+        return capabilities.getBrowserVersion();
+    }
 }

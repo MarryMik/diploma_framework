@@ -67,13 +67,13 @@ public class VisualDifference {
 
     private String classifyDifference(Rect rect){
         if (rect.width * rect.height > 10000) {
-            return "Large Layout Issue";
+            return "Велика роблема з макетом";
         } else if (rect.width > rect.height) {
-            return "Horizontal Alignment Issue";
+            return "Проблема горизонтального вирівнювання";
         } else if (rect.height > rect.width) {
-            return "Vertical Alignment Issue";
+            return "Проблема вертикального вирівнювання";
         } else {
-            return "Minor Visual Glitch";
+            return "Незначний візуальний збій";
         }
     }
 

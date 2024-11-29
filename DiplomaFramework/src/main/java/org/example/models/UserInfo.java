@@ -8,15 +8,13 @@ public class UserInfo {
     private String birthDate;
     private String gender;
     private String userType;
-    private String address;
-    private String speciality;
     private String password;
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String productName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
@@ -58,22 +56,6 @@ public class UserInfo {
 
     public void setUserType(String userType) {
         this.userType = userType;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getSpeciality() {
-        return speciality;
-    }
-
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
     }
 
     public String getPassword() {

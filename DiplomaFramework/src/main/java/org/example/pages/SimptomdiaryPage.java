@@ -6,6 +6,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.example.utils.Utils.sleep;
+
 public class SimptomdiaryPage extends BasePage{
     private  final String brushingPageLinkId = "brushing_page_link";
     private final String addSymptomButtonXpath ="//button[@class=\"symptom-history__buttn_add\" and text()=\"Додати\"]";
@@ -24,6 +26,7 @@ public class SimptomdiaryPage extends BasePage{
     }
 
     public void openSymptomWindow(){
+        sleep(1000);
         driver.findElement(By.xpath(this.addSymptomButtonXpath)).click();
         driver.findElement(By.xpath(this.symptomNameInputXpath)).sendKeys("Зубний біль");
         driver.findElement(By.xpath(this.symptomStartDateInputXpath)).sendKeys("18.11.2024");

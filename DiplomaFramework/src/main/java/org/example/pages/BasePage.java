@@ -1,12 +1,10 @@
 package org.example.pages;
 
 import static org.example.core.WebDriverInstance.driverInstance;
+import static org.example.utils.Utils.sleep;
 
 import org.example.xbidetection.Screenshot;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import javax.imageio.ImageIO;
@@ -21,6 +19,12 @@ public class BasePage {
 
     public void setDriver(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public void pageUp(){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, 0);");
+        sleep(2000);
     }
 
     public String getPageTitle() {

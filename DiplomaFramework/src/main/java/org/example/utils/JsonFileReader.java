@@ -2,6 +2,7 @@ package org.example.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import org.example.models.DoctorInfo;
 import org.example.models.UserInfo;
 
 import java.io.File;
@@ -15,6 +16,7 @@ public class JsonFileReader implements IUserInfoReader{
         try{
             log.info("Read JSON file with test data. File path: " + path);
             File file = new File(path);
+            log.info(path);
             if(!file.exists() || file.isDirectory()){
                 log.fatal("File doesn't exist or is not a directory: ");
                 throw new IOException();
@@ -25,6 +27,23 @@ public class JsonFileReader implements IUserInfoReader{
             log.fatal("Can`t find file. Error: " + e.getMessage());
         }
         return new UserInfo();
+    }
+
+    public DoctorInfo readDoctorInfo(String path){
+        try{
+            log.info("Read JSON file with test data. File path: " + path);
+            File file = new File(path);
+            log.info(path);
+            if(!file.exists() || file.isDirectory()){
+                log.fatal("File doesn't exist or is not a directory: ");
+                throw new IOException();
+            }
+
+            return mapper.readValue(file, DoctorInfo.class);
+        }catch(IOException e){
+            log.fatal("Can`t find file. Error: " + e.getMessage());
+        }
+        return new DoctorInfo();
     }
 
 }

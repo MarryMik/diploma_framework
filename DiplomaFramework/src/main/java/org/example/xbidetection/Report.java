@@ -30,12 +30,11 @@ public class Report {
     private List <String> pages;
 
     private List<String>  getBrowsersNameList (){
-        incompatibilitiesByBrowser = new ArrayList<>();
-        Set<String> uniqueBrowser = incompatibilities.stream()
+               Set<String> uniqueBrowser = incompatibilities.stream()
                 .map(xbi -> xbi.getBrowserName())
                 .collect(Collectors.toSet());
         List<String> uniqueBrowserList = new ArrayList<>(uniqueBrowser);
-        if(uniqueBrowserList.size() > 1){
+        if(uniqueBrowserList.size() > 0){
             for(String browserName : uniqueBrowserList){
                 Map<Boolean, List<Incompatibility>> partitioned = incompatibilities.stream()
                         .collect(Collectors.partitioningBy(xbi -> xbi.getBrowserName().equals(browserName)));
@@ -46,12 +45,11 @@ public class Report {
     }
 
     private List<String> getPagesNameList (){
-        icompatibilitiesByPages = new ArrayList<>();
         Set<String> uniquePages = incompatibilities.stream()
                 .map(xbi -> xbi.getPageName())
                 .collect(Collectors.toSet());
         List<String> uniquePageList = new ArrayList<>(uniquePages);
-        if(uniquePageList.size() > 1){
+        if(uniquePageList.size() > 0){
             for(String pageName: uniquePageList){
                 Map<Boolean, List<Incompatibility>> partitioned = incompatibilities.stream()
                         .collect(Collectors.partitioningBy(xbi -> xbi.getPageName().equals(pageName)));
@@ -66,8 +64,8 @@ public class Report {
         this.number = getNumberOfReport();
         incompatibilities = new ArrayList<>();
         report = new JSONObject();
-        browsers = new ArrayList<>(getBrowsersNameList());
-        pages = new ArrayList<>(getPagesNameList());
+        incompatibilitiesByBrowser = new ArrayList<>();
+        icompatibilitiesByPages = new ArrayList<>();
     }
 
     public String getName() {
@@ -141,6 +139,8 @@ public class Report {
     }
 
     public void createReport() throws JSONException, IOException {
+        this.browsers = new ArrayList<>(getBrowsersNameList());
+        this.pages = new ArrayList<>(getPagesNameList());
         report.put(number+"-Звіт", name);
         LocalDateTime currentDateTime = LocalDateTime.now();
         report.put("Дата і час", currentDateTime);
@@ -170,11 +170,14 @@ public class Report {
 
         //узагальнення
         JSONObject generalization = new JSONObject();
+        generalization.put("Кількість тестованих браузерів",this.browsers.size());
+        generalization.put("Кількіть тестованих сторінок", this.pages.size());
         generalization.put("Загальна кількість несумісностей",incompatibilities.size());
         for(List<Incompatibility> incBybrowser: incompatibilitiesByBrowser) {
             JSONObject browsers = new JSONObject();
-
+            browsers.put("Розмір вікна", incBybrowser.get(0).getDetectedDifference().getVisDiff().getTestScreenshot().getSize());
             List<List<Incompatibility>> xbiByBrowserAndByPage = dividePagesXBIbyBrowsers(incBybrowser.get(0).getBrowserName());
+
             for(List<Incompatibility> incByPage: xbiByBrowserAndByPage) {
                 JSONObject pages = new JSONObject();
                 pages.put("Кількість несумісностей", incByPage.size());
@@ -206,17 +209,17 @@ public class Report {
                 pages.put("Веб елементи", webElementsXBI);
 
                 //details
-                JSONObject detailsXBI = new JSONObject();
-                Set<String> uniqueDetails = incByPage.stream()
-                        .map(xbi -> xbi.getDetails())
-                        .collect(Collectors.toSet());
-                for(String uniqueDetail : uniqueDetails){
-                    long count = incByPage.stream()
-                            .filter( xbi -> xbi.getDetails().equals(uniqueDetail))
-                            .count();
-                    detailsXBI.put("Кількість ХВІ з '"+uniqueDetail+"'",count);
-                }
-                pages.put("Деталі", detailsXBI);
+//                JSONObject detailsXBI = new JSONObject();
+//                Set<String> uniqueDetails = incByPage.stream()
+//                        .map(xbi -> xbi.getDetails())
+//                        .collect(Collectors.toSet());
+//                for(String uniqueDetail : uniqueDetails){
+//                    long count = incByPage.stream()
+//                            .filter( xbi -> xbi.getDetails().equals(uniqueDetail))
+//                            .count();
+//                    detailsXBI.put("Кількість ХВІ з '"+uniqueDetail+"'",count);
+//                }
+//                pages.put("Деталі", detailsXBI);
 
                 // visdiff type
                 JSONObject visualDiffType = new JSONObject();

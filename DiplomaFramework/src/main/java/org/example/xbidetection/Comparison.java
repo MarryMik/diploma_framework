@@ -48,6 +48,7 @@ public class Comparison {
 
    public List<VisualDifference> compare(){
         List<VisualDifference> differences = new ArrayList<VisualDifference>();
+        System.out.println("comparison");
         for(int i =0; i < testScreenshots.size(); i++){
             differences.addAll(testScreenshots.get(i).detectCBD(baselineScreenshots.get(i)));
         }

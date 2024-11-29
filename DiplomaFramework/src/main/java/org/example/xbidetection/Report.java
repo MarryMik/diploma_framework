@@ -163,7 +163,10 @@ public class Report {
                 screensh.put("Скріншот сторінки", incByPage.get(0).getFilePath());
                 pages.put("Скріншот", screensh);
                 putIncompatibilities(incByPage, pages);
-                browsers.put("Сторінка - "+incBybrowser.get(0).getPageName(), pages);
+
+                System.out.println(incByPage.get(0).getPageName());
+
+                browsers.put("Сторінка - "+incByPage.get(0).getPageName(), pages);
             }
             report.put("Браузер - "+incBybrowser.get(0).getBrowserName(), browsers);
         }
@@ -233,7 +236,7 @@ public class Report {
                     visualDiffType.put("Кількість елементів з'"+uniqueVissType+"'",count);
                 }
                 pages.put("Візуальна різниця", visualDiffType);
-                browsers.put("Сторінка - "+incBybrowser.get(0).getPageName(), pages);
+                browsers.put("Сторінка - "+incByPage.get(0).getPageName(), pages);
             }
             generalization.put("Браузер - "+incBybrowser.get(0).getBrowserName(), browsers);
         }

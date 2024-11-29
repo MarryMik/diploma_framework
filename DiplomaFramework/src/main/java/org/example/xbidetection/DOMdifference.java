@@ -19,8 +19,8 @@ public class DOMdifference {
 
     private void findDriverAndXpathes() {
         WebDriver baselineDriver = visDiff.getBaselineScreenshot().getDriver();
-        System.out.println("(method 'findDriverAndXpathes') test elem == null:");
-        System.out.println(testElement==null);
+        //System.out.println("(method 'findDriverAndXpathes') test elem == null:");
+        //System.out.println(testElement==null);
         if (testElement!=null) {
             String xpath = getXPath(testElement, visDiff.getTestScreenshot().getDriver());
             try{

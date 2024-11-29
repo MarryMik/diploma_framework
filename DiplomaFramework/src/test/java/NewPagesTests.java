@@ -31,6 +31,7 @@ public class NewPagesTests extends BaseTest{
         sleep(2000);
         log.info("set driver to pages");
         mainPage.setDriver(driver1);
+        requestPage.setDriver(driver1);
 
         log.info("Take baseline screenshots");
         String baselineScreenshotName = report.getNumber()+"_GC_baseline.png";
@@ -41,11 +42,19 @@ public class NewPagesTests extends BaseTest{
         baselineScreenshots.add(mainPageScreenshot);
         mainPage.openRequestPage();
 
+        log.info("Screenshot of request page");
+        requestPage.pageUp();
+        requestPage.fillRequestInputsAndSearchDoctors();
+        Screenshot requestPageScreenshot = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+baselineScreenshotName);
+        baselineScreenshots.add(requestPageScreenshot);
+        requestPage.openRegisterPage();
+
         log.info("FireFox");
         driver2.get(baseUrl);
 
         log.info("set driver to pages");
         mainPage.setDriver(driver2);
+        requestPage.setDriver(driver2);
 
         log.info("Take testing screenshots");
         String testingScreenshotName = report.getNumber()+"_FF_testing.png";
@@ -55,12 +64,20 @@ public class NewPagesTests extends BaseTest{
         Screenshot mainPageScreenshotT = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+testingScreenshotName);
         testingScreenshots.add(mainPageScreenshotT);
         mainPage.openRequestPage();
+
+        log.info("Screenshot of request page");
+        requestPage.pageUp();
+        requestPage.fillRequestInputsAndSearchDoctors();
+        Screenshot requestPageScreenshot2 = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+testingScreenshotName);
+        testingScreenshots.add(requestPageScreenshot2);
+        requestPage.openRegisterPage();
         //----
         log.info("MicrosoftEdge");
         driver3.get(baseUrl);
 
         log.info("set driver to pages");
         mainPage.setDriver(driver3);
+        requestPage.setDriver(driver3);
 
         log.info("Take testing screenshots");
         String testingScreenshotName2 = report.getNumber()+"_ME_testing.png";
@@ -70,6 +87,13 @@ public class NewPagesTests extends BaseTest{
         Screenshot mainPageScreenshotT2 = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+testingScreenshotName2);
         testingScreenshots2.add(mainPageScreenshotT2);
         mainPage.openRequestPage();
+
+        log.info("Screenshot of request page");
+        requestPage.pageUp();
+        requestPage.fillRequestInputsAndSearchDoctors();
+        Screenshot requestPageScreenshotT2 = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+testingScreenshotName2);
+        testingScreenshots2.add(requestPageScreenshotT2);
+        requestPage.openRegisterPage();
 
         log.info("Compare baseline screenshots to testing screenshot");
         log.info("Compare with screenshot from FireFox");

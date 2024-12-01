@@ -19,8 +19,6 @@ public class DOMdifference {
 
     private void findDriverAndXpathes() {
         WebDriver baselineDriver = visDiff.getBaselineScreenshot().getDriver();
-        //System.out.println("(method 'findDriverAndXpathes') test elem == null:");
-        //System.out.println(testElement==null);
         if (testElement!=null) {
             String xpath = getXPath(testElement, visDiff.getTestScreenshot().getDriver());
             try{
@@ -94,34 +92,7 @@ public class DOMdifference {
     }
 
     private String getXPath(WebElement element, WebDriver driver) {
-//        System.out.println("Id of element "+ element.getAttribute("id"));
-        //if(element!=null && element.getAttribute("id")!= )
-
         JavascriptExecutor js = (JavascriptExecutor) driver;
-
-//        String xpath = (String) js.executeScript(
-//                "function getXPath(element) {" +
-//                        "    if (element.id !== '' || element.id !== undefined || element.id !== null) {" +
-//                        "        return 'id(\"' + element.id + '\")';" +
-//                        "    }" +
-//                        "    if (element === document.body) {" +
-//                        "        return element.tagName;" +
-//                        "    }" +
-//                        "    var ix = 0;" +
-//                        "    var siblings = element.parentNode.childNodes;" +
-//                        "    for (var i = 0; i < siblings.length; i++) {" +
-//                        "        var sibling = siblings[i];" +
-//                        "        if (sibling === element) {" +
-//                        "            return getXPath(element.parentNode) + '/' + element.tagName + '[' + (ix + 1) + ']';" +
-//                        "        }" +
-//                        "        if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {" +
-//                        "            ix++;" +
-//                        "        }" +
-//                        "    }" +
-//                        "} return getXPath(arguments[0]);", element);
-//        System.out.println("xpath: "+xpath);
-//        return xpath;
-//        JavascriptExecutor jsExecutor = (JavascriptExecutor) ((WrapsDriver) element).getWrappedDriver();
         String xpath = (String) js.executeScript(
                 "function absoluteXPath(element) {" +
                         "var comp, comps = [];" +
@@ -172,7 +143,6 @@ public class DOMdifference {
                         "}" +
                         "return xpath;" +
                         "} return absoluteXPath(arguments[0]);", element);
-//        System.out.println("xpath: "+xpath);
         return xpath;
     }
 
@@ -180,9 +150,6 @@ public class DOMdifference {
     public List<Incompatibility> detectXBI() {
         findDriverAndXpathes();
         List<Incompatibility> issues = new ArrayList<>();
-//        System.out.println("(method 'detectXBI') test elem == null:");
-//        System.out.println(testElement==null);
-//        System.out.println(this.testElement==null);
         if(this.testElement == null){
             Incompatibility noElem = new Incompatibility("Веб елемент не було ідентифіковано");
             noElem.setDetectedDifference(this);
@@ -199,7 +166,6 @@ public class DOMdifference {
             if(!positionAndSizeIssues.isEmpty()){issues.addAll(positionAndSizeIssues);}
             if(!appearanceIssues.isEmpty()){issues.addAll(appearanceIssues);}
         }
-//        System.out.println("issues: "+issues.size());
         return issues;
     }
 

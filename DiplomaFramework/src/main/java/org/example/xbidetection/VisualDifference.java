@@ -17,9 +17,7 @@ public class VisualDifference {
     private Screenshot baseScreenshot;
     private String methodName;
     private Rect boundingBox;
-    private String pathToNewScreenshot;
-
-
+    
 
     public VisualDifference(Screenshot testScreenshot, Screenshot baseScreenshot, Rect boundingBox) {
         this.testScreenshot = testScreenshot;
@@ -35,9 +33,7 @@ public class VisualDifference {
         return baseScreenshot;
     }
 
-    public String getPathToNewScreenshot(){
-        return pathToNewScreenshot;
-    }
+
 
     public Rect getBoundingBox() {
         return boundingBox;
@@ -77,26 +73,16 @@ public class VisualDifference {
         }
     }
 
-    private void drawCMD(String outputDiffPath){
+    private void drawCMD(){
         Mat img1 = Imgcodecs.imread(testScreenshot.getPath());
         Imgproc.rectangle(img1, boundingBox, new Scalar(0, 0, 255),2);
-        Imgcodecs.imwrite(outputDiffPath, img1);
-        this.pathToNewScreenshot = outputDiffPath;
+        Imgcodecs.imwrite(testScreenshot.getPath(), img1);
     }
 
-    public DOMdifference detectDOMDifference(String outputDiffPath){
+    public DOMdifference detectDOMDifference(){
         String category = classifyDifference(boundingBox);
         WebElement element = identifyWebElement();
-
-        //add Log!
-//        String elementDescription;
-//        if(element != null){
-//            elementDescription = element.getTagName() + " (" + element.getText() + ")";
-//        }else{
-//            elementDescription = "element is not found";
-//        }
-
-        //drawCMD(outputDiffPath);
+        drawCMD();
         DOMdifference domDiff = new DOMdifference(this,element, category);
         return domDiff;
     }

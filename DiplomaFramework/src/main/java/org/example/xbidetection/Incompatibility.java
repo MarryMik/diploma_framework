@@ -60,10 +60,6 @@ public class Incompatibility {
         return detectedDifference.getVisDiff().getTestScreenshot().getPath();
     }
 
-    public String getFilePathScreenshot2() {
-        return detectedDifference.getVisDiff().getPathToNewScreenshot();
-    }
-
     public String getBrowserName() {
         return detectedDifference.getVisDiff().getTestScreenshot().getBrowserName();
     }

@@ -118,7 +118,6 @@ public class Report {
         JSONObject xbis = new JSONObject();
         for (Incompatibility i : incompatibilities) {
             JSONObject incoms = new JSONObject();
-            incoms.put("Скріншот з відмітками", i.getFilePathScreenshot2());
             incoms.put("Тип", i.getIssueType());
             incoms.put("Деталі", i.getDetails());
             incoms.put("Веб елемент", i.getWebElementTagName());

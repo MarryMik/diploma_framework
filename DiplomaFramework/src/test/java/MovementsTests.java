@@ -172,11 +172,7 @@ public class MovementsTests extends BaseTest{
         List <DOMdifference> doMdifferences = new ArrayList<>();
         int j =0;
         for(VisualDifference visualDifference : visualDifferences) {
-            //create report folder
-            String nameOfFile = report.getNumber()+"_FF_cbd"+j+".png";
-            String pageTitle = visualDifference.getTestScreenshot().getPageName();
-            String path = reportFilesPath+pageTitle+"/cbd/"+nameOfFile;
-            DOMdifference domDiff = visualDifference.detectDOMDifference(path);
+            DOMdifference domDiff = visualDifference.detectDOMDifference();
             doMdifferences.add(domDiff);
             j++;
         }
@@ -185,11 +181,7 @@ public class MovementsTests extends BaseTest{
         List <DOMdifference> doMdifferences2 = new ArrayList<>();
         j =0;
         for(VisualDifference visualDifference : visualDifferences2) {
-            //create report folder
-            String nameOfFile = report.getNumber()+"_ME_cbd"+j+".png";
-            String pageTitle = visualDifference.getTestScreenshot().getPageName();
-            String path = reportFilesPath+pageTitle+"/cbd/"+nameOfFile;
-            DOMdifference domDiff = visualDifference.detectDOMDifference(path);
+            DOMdifference domDiff = visualDifference.detectDOMDifference();
             doMdifferences2.add(domDiff);
             j++;
         }

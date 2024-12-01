@@ -151,8 +151,6 @@ public class Screenshot {
         int minHeight = Math.min(baselineImage.height(), testImage.height());
         int minWidth = Math.min(baselineImage.width(), testImage.width());
         Rect cropRect = new Rect(0, 0, minWidth, minHeight);
-        //System.out.println("Height baseline - "+baselineImage.height()+" test - "+testImage.height());
-        //System.out.println("Width baseline - "+baselineImage.width()+" test - "+testImage.width());
 
         if(baselineImage.rows()<testImage.rows()){
             testImage = testImage.submat(cropRect);

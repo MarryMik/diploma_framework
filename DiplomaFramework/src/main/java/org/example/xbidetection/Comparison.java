@@ -46,11 +46,20 @@ public class Comparison {
         baselineScreenshots.add(baselineScreenshot);
     }
 
-   public List<VisualDifference> compare(){
+   public List<VisualDifference> compare(String method){
         List<VisualDifference> differences = new ArrayList<VisualDifference>();
         System.out.println("comparison");
-        for(int i =0; i < testScreenshots.size(); i++){
-            differences.addAll(testScreenshots.get(i).detectCBD(baselineScreenshots.get(i)));
+        switch(method){
+            case "pixels":
+                for(int i =0; i < testScreenshots.size(); i++){
+                    differences.addAll(testScreenshots.get(i).detectCBDbyPixels(baselineScreenshots.get(i)));
+                }
+                break;
+            case "SSIM":
+                for(int i =0; i < testScreenshots.size(); i++){
+                    differences.addAll(testScreenshots.get(i).detectCBDbySSIM(baselineScreenshots.get(i)));
+                }
+                break;
         }
         return differences;
    }

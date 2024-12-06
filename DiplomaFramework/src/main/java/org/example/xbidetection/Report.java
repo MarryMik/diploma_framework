@@ -22,7 +22,8 @@ public class Report {
     private String name;
     private JSONObject report;
     private Integer number;
-    private final String pathReport = "src/test/java/testdata/reports/report.json";
+    //private String pathReport = "src/test/java/testdata/reports/report.json";
+    private String pathReport;
     private List<Incompatibility> incompatibilities;
     private List<List<Incompatibility>> incompatibilitiesByBrowser;
     private List <String> browsers;
@@ -59,8 +60,9 @@ public class Report {
         return uniquePageList;
     }
 
-    public Report(String name) throws JSONException, IOException {
+    public Report(String name, String Path) throws JSONException, IOException {
         this.name = name;
+        this.pathReport = Path;
         this.number = getNumberOfReport();
         incompatibilities = new ArrayList<>();
         report = new JSONObject();
@@ -122,6 +124,7 @@ public class Report {
             incoms.put("Деталі", i.getDetails());
             incoms.put("Веб елемент", i.getWebElementTagName());
             incoms.put("Візуальна різниця", i.getVisualDiffType());
+            incoms.put("Назва метода:", i.getMethodName());
             xbis.put( i+"" ,incoms);
         }
         pages.put("Несумісності", xbis);
@@ -145,29 +148,39 @@ public class Report {
         report.put("Дата і час", currentDateTime);
         // by browser
         for(List<Incompatibility> incBybrowser: incompatibilitiesByBrowser){
-            JSONObject browsers = new JSONObject();
-            browsers.put("Назва", incBybrowser.get(0).getBrowserName());
-            browsers.put("Версія", incBybrowser.get(0).getBrowserVersion());
+            System.out.println("incBybrowser size = " + incBybrowser.size());
 
-            JSONObject baselineBrowser = new JSONObject();
-            baselineBrowser.put("Назва", incBybrowser.get(0).getBaselineBrowserName());
-            baselineBrowser.put("Версія", incBybrowser.get(0).getBaseLineBrowserVersion() );
-            browsers.put("Базовий браузер", baselineBrowser);
-            //by page
-            List<List<Incompatibility>> xbiByBrowserAndByPage = dividePagesXBIbyBrowsers(incBybrowser.get(0).getBrowserName());
-            for(List<Incompatibility> incByPage: xbiByBrowserAndByPage){
-                JSONObject pages = new JSONObject();
-                JSONObject screensh = new JSONObject();
-                screensh.put("Розмір", incByPage.get(0).getDetectedDifference().getVisDiff().getTestScreenshot().getSize());
-                screensh.put("Скріншот сторінки", incByPage.get(0).getFilePath());
-                pages.put("Скріншот", screensh);
-                putIncompatibilities(incByPage, pages);
+                JSONObject browsers = new JSONObject();
+                browsers.put("Назва", incBybrowser.get(0).getBrowserName());
+                browsers.put("Версія", incBybrowser.get(0).getBrowserVersion());
 
-                System.out.println(incByPage.get(0).getPageName());
+                JSONObject baselineBrowser = new JSONObject();
+                baselineBrowser.put("Назва", incBybrowser.get(0).getBaselineBrowserName());
+                baselineBrowser.put("Версія", incBybrowser.get(0).getBaseLineBrowserVersion());
+                browsers.put("Базовий браузер", baselineBrowser);
+                //by page
 
-                browsers.put("Сторінка - "+incByPage.get(0).getPageName(), pages);
-            }
-            report.put("Браузер - "+incBybrowser.get(0).getBrowserName(), browsers);
+                List<List<Incompatibility>> xbiByBrowserAndByPage = dividePagesXBIbyBrowsers(incBybrowser.get(0).getBrowserName());
+                System.out.println("xbiByBrowserAndByPage size = " + xbiByBrowserAndByPage.size());
+                for (List<Incompatibility> incByPage : xbiByBrowserAndByPage) {
+                    try{
+                    System.out.println("incByPage size = " + incByPage.size());
+
+                    JSONObject pages = new JSONObject();
+                    JSONObject screensh = new JSONObject();
+                    screensh.put("Розмір", incByPage.get(0).getDetectedDifference().getVisDiff().getTestScreenshot().getSize());
+                    screensh.put("Скріншот сторінки", incByPage.get(0).getFilePath());
+                    pages.put("Скріншот", screensh);
+                    putIncompatibilities(incByPage, pages);
+
+                    System.out.println(incByPage.get(0).getPageName());
+
+                    browsers.put("Сторінка - " + incByPage.get(0).getPageName(), pages);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
+                }
+            report.put("Браузер - " + incBybrowser.get(0).getBrowserName(), browsers);
         }
 
         //узагальнення
@@ -176,11 +189,13 @@ public class Report {
         generalization.put("Кількіть тестованих сторінок", this.pages.size());
         generalization.put("Загальна кількість несумісностей",incompatibilities.size());
         for(List<Incompatibility> incBybrowser: incompatibilitiesByBrowser) {
+
             JSONObject browsers = new JSONObject();
             browsers.put("Розмір вікна", incBybrowser.get(0).getDetectedDifference().getVisDiff().getTestScreenshot().getSize());
             List<List<Incompatibility>> xbiByBrowserAndByPage = dividePagesXBIbyBrowsers(incBybrowser.get(0).getBrowserName());
 
             for(List<Incompatibility> incByPage: xbiByBrowserAndByPage) {
+                try{
                 JSONObject pages = new JSONObject();
                 pages.put("Кількість несумісностей", incByPage.size());
 
@@ -196,6 +211,19 @@ public class Report {
                     typeXBI.put("Кількість ХВІ з '"+uniqueIssue+"'",count);
                 }
                 pages.put("Тип ХВІ",typeXBI);
+
+                //subType
+                JSONObject subTypeXBI = new JSONObject();
+                Set<String> uniqueSubIssueTypeXBIs = incByPage.stream()
+                        .map(xbi -> xbi.getSubIssueType())
+                        .collect(Collectors.toSet());
+                for(String uniqueIssue : uniqueSubIssueTypeXBIs){
+                    long count = incByPage.stream()
+                            .filter( xbi -> xbi.getSubIssueType().equals(uniqueIssue))
+                            .count();
+                    subTypeXBI.put("Кількість ХВІ з '"+uniqueIssue+"'",count);
+                }
+                pages.put("Підтип ХВІ",subTypeXBI);
 
                 // web elements
                 JSONObject webElementsXBI = new JSONObject();
@@ -236,8 +264,12 @@ public class Report {
                 }
                 pages.put("Візуальна різниця", visualDiffType);
                 browsers.put("Сторінка - "+incByPage.get(0).getPageName(), pages);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
             }
             generalization.put("Браузер - "+incBybrowser.get(0).getBrowserName(), browsers);
+
         }
 
         report.put("Узагальнення", generalization);
@@ -266,5 +298,9 @@ public class Report {
 
     public Integer getNumber() {
         return number;
+    }
+
+    public void setPathReport(String path){
+        this.pathReport=path;
     }
 }

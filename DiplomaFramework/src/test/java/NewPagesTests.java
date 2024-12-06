@@ -24,7 +24,8 @@ public class NewPagesTests extends BaseTest{
 //        driver.get("https://example.com");
     @Test
     public void detectXBITest() throws IOException, JSONException{
-        Report report = new Report("All pages XBI detection");
+        String methodName = "SSIM/";
+        Report report = new Report("All pages XBI detection","src/test/java/testdata/reports/newReport.json");
         String reportFilesPath ="src/test/java/testdata/reports/files/";
         log.info("Google Chrome");
         driver1.get(baseUrl);
@@ -38,14 +39,14 @@ public class NewPagesTests extends BaseTest{
         List<Screenshot> baselineScreenshots = new ArrayList<>();
 
         log.info("Screenshot of main page");
-        Screenshot mainPageScreenshot = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+baselineScreenshotName);
+        Screenshot mainPageScreenshot = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+methodName+baselineScreenshotName);
         baselineScreenshots.add(mainPageScreenshot);
         mainPage.openRequestPage();
 
         log.info("Screenshot of request page");
         requestPage.pageUp();
         requestPage.fillRequestInputsAndSearchDoctors();
-        Screenshot requestPageScreenshot = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+baselineScreenshotName);
+        Screenshot requestPageScreenshot = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+methodName+baselineScreenshotName);
         baselineScreenshots.add(requestPageScreenshot);
         requestPage.openRegisterPage();
 
@@ -61,14 +62,14 @@ public class NewPagesTests extends BaseTest{
         List<Screenshot> testingScreenshots = new ArrayList<>();
 
         log.info("Screenshot of main page");
-        Screenshot mainPageScreenshotT = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+testingScreenshotName);
+        Screenshot mainPageScreenshotT = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+methodName+testingScreenshotName);
         testingScreenshots.add(mainPageScreenshotT);
         mainPage.openRequestPage();
 
         log.info("Screenshot of request page");
         requestPage.pageUp();
         requestPage.fillRequestInputsAndSearchDoctors();
-        Screenshot requestPageScreenshot2 = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+testingScreenshotName);
+        Screenshot requestPageScreenshot2 = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+methodName+testingScreenshotName);
         testingScreenshots.add(requestPageScreenshot2);
         requestPage.openRegisterPage();
         //----
@@ -84,14 +85,14 @@ public class NewPagesTests extends BaseTest{
         List<Screenshot> testingScreenshots2 = new ArrayList<>();
 
         log.info("Screenshot of main page");
-        Screenshot mainPageScreenshotT2 = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+testingScreenshotName2);
+        Screenshot mainPageScreenshotT2 = mainPage.takeScreenshot(reportFilesPath+"mainpage/"+methodName+testingScreenshotName2);
         testingScreenshots2.add(mainPageScreenshotT2);
         mainPage.openRequestPage();
 
         log.info("Screenshot of request page");
         requestPage.pageUp();
         requestPage.fillRequestInputsAndSearchDoctors();
-        Screenshot requestPageScreenshotT2 = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+testingScreenshotName2);
+        Screenshot requestPageScreenshotT2 = requestPage.takeScreenshot(reportFilesPath+"requestpage/"+methodName+testingScreenshotName2);
         testingScreenshots2.add(requestPageScreenshotT2);
         requestPage.openRegisterPage();
 
@@ -100,35 +101,39 @@ public class NewPagesTests extends BaseTest{
         Comparison comparison = new Comparison("GoogleChrome", "FireFox");
         comparison.setTestScreenshots(testingScreenshots);
         comparison.setBaselineScreenshots(baselineScreenshots);
-        List <VisualDifference> visualDifferences = comparison.compare();
+        List <VisualDifference> visualDifferences = comparison.compare("SSIM");
         log.info("Vdiff size "+visualDifferences.size());
 
         log.info("Compare with screenshot from MicrosoftEdge");
         Comparison comparison2 = new Comparison("GoogleChrome", "MicrosoftEdge");
         comparison2.setTestScreenshots(testingScreenshots2);
         comparison2.setBaselineScreenshots(baselineScreenshots);
-        List <VisualDifference> visualDifferences2 = comparison2.compare();
+        List <VisualDifference> visualDifferences2 = comparison2.compare("SSIM");
         log.info("Vdiff size "+visualDifferences2.size());
+
+        List<VisualDifference> allVissDifferences = new ArrayList<>();
+        allVissDifferences.addAll(visualDifferences);
+        allVissDifferences.addAll(visualDifferences2);
 
         log.info("Detect DOM differences (from FireFox)");
         List <DOMdifference> doMdifferences = new ArrayList<>();
         int j =0;
-        for(VisualDifference visualDifference : visualDifferences) {
+        for(VisualDifference visualDifference : allVissDifferences) {
             DOMdifference domDiff = visualDifference.detectDOMDifference();
             doMdifferences.add(domDiff);
             j++;
         }
         log.info("DOM size "+doMdifferences.size());
 
-        log.info("Detect DOM differences (from MicrosoftEdge)");
-        List <DOMdifference> doMdifferences2 = new ArrayList<>();
-        j =0;
-        for(VisualDifference visualDifference : visualDifferences2) {
-            DOMdifference domDiff = visualDifference.detectDOMDifference();
-            doMdifferences2.add(domDiff);
-            j++;
-        }
-        log.info("DOM size "+doMdifferences2.size());
+//        log.info("Detect DOM differences (from MicrosoftEdge)");
+//        List <DOMdifference> doMdifferences2 = new ArrayList<>();
+//        j =0;
+//        for(VisualDifference visualDifference : visualDifferences2) {
+//            DOMdifference domDiff = visualDifference.detectDOMDifference();
+//            doMdifferences2.add(domDiff);
+//            j++;
+//        }
+//        log.info("DOM size "+doMdifferences2.size());
 
         log.info("Detect incompatibilities (From FireFox)");
         List <Incompatibility> incompatibilities = new ArrayList<>();
@@ -137,16 +142,16 @@ public class NewPagesTests extends BaseTest{
             incompatibilities.addAll(i);
         }
 
-        log.info("Detect incompatibilities (From MicrosoftEdge)");
-        List <Incompatibility> incompatibilities2 = new ArrayList<>();
-        for(DOMdifference domDifference : doMdifferences2) {
-            List <Incompatibility> i = domDifference.detectXBI();
-            incompatibilities2.addAll(i);
-        }
+//        log.info("Detect incompatibilities (From MicrosoftEdge)");
+//        List <Incompatibility> incompatibilities2 = new ArrayList<>();
+//        for(DOMdifference domDifference : doMdifferences2) {
+//            List <Incompatibility> i = domDifference.detectXBI();
+//            incompatibilities2.addAll(i);
+//        }
 
         log.info("create report");
         report.addIncompatibilities(incompatibilities);
-        report.addIncompatibilities(incompatibilities2);
+//        report.addIncompatibilities(incompatibilities2);
         report.createReport();
         report.saveReport();
         report.showReport();

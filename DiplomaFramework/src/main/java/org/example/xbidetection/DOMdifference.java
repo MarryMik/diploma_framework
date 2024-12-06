@@ -31,8 +31,8 @@ public class DOMdifference {
         }
     }
 
-    private Incompatibility createIncompatibility(String type, String details) {
-        Incompatibility i = new Incompatibility(type, details);
+    private Incompatibility createIncompatibility(String type, String subtype, String details) {
+        Incompatibility i = new Incompatibility(type, details, subtype);
         i.setDetectedDifference(this);
         return i;
     }
@@ -41,9 +41,9 @@ public class DOMdifference {
         List<Incompatibility> issues = new ArrayList<>();
         String type = "Різна видимість";
         if (!baselineElement.isDisplayed() && testElement.isDisplayed()) {
-            issues.add(createIncompatibility(type, "Елемент видимий в тестуючому браузері але не видимий у базовому."));
+            issues.add(createIncompatibility(type, "немає","Елемент видимий в тестуючому браузері але не видимий у базовому."));
         } else if (baselineElement.isDisplayed() && !testElement.isDisplayed()) {
-            issues.add(createIncompatibility(type, "Елемент видимий в базовому браузері але не видимий в тестуючому."));
+            issues.add(createIncompatibility(type, "немає", "Елемент видимий в базовому браузері але не видимий в тестуючому."));
         }
         return issues;
     }
@@ -57,13 +57,13 @@ public class DOMdifference {
         int deltaX = Math.abs(baselineRect.x - testRect.x);
         int deltaY = Math.abs(baselineRect.y - testRect.y);
         if (deltaX > 40 || deltaY > 40) {
-            issues.add(createIncompatibility("Різне позиціювання", "Базовий: (" + baselineRect.x + "," + baselineRect.y + "), Тестуючий: (" + testRect.x + "," + testRect.y + ")"));
+            issues.add(createIncompatibility("Різне позиціювання", "немає","Базовий: (" + baselineRect.x + "," + baselineRect.y + "), Тестуючий: (" + testRect.x + "," + testRect.y + ")"));
         }
         // Size comparison
         int deltaWidth = Math.abs(baselineRect.width - testRect.width);
         int deltaHeight = Math.abs(baselineRect.height - testRect.height);
         if (deltaWidth > 15 || deltaHeight > 15) {
-            issues.add(createIncompatibility("Різний розмір", "Базовий: " + baselineRect.width + "x" + baselineRect.height + ", Тестуючий: " + testRect.width + "x" + testRect.height));
+            issues.add(createIncompatibility("Різний розмір", "немає","Базовий: " + baselineRect.width + "x" + baselineRect.height + ", Тестуючий: " + testRect.width + "x" + testRect.height));
         }
         return issues;
     }
@@ -74,19 +74,19 @@ public class DOMdifference {
         String baselineColor = baselineElement.getCssValue("color");
         String testColor = testElement.getCssValue("color");
         if (!baselineColor.equals(testColor)) {
-            issues.add(createIncompatibility("Різний зовнішній вигляд", "Невідповідність кольору. Базовий: " + baselineColor + ", Тестуючий: " + testColor));
+            issues.add(createIncompatibility("Різний зовнішній вигляд", "Невідповідність кольору","Невідповідність кольору. Базовий: " + baselineColor + ", Тестуючий: " + testColor));
         }
         // Compare font properties
         String baselineFont = baselineElement.getCssValue("font");
         String testFont = testElement.getCssValue("font");
         if (!baselineFont.equals(testFont)) {
-            issues.add(createIncompatibility("Різний зовнішній вигляд", "Невідповідність шрифту. Базовий: " + baselineFont + ", Тестуючий: " + testFont));
+            issues.add(createIncompatibility("Різний зовнішній вигляд", "Невідповідність шрифту","Невідповідність шрифту. Базовий: " + baselineFont + ", Тестуючий: " + testFont));
         }
         // Compare content
         String baselineText = baselineElement.getText();
         String testText = testElement.getText();
         if (!baselineText.equals(testText)) {
-            issues.add(createIncompatibility("Різний контент",  "Невідповідність контенту. Базовий: \"" + baselineText + "\", Тестуючий: \"" + testText + "\""));
+            issues.add(createIncompatibility("Різний контент", "Невідповідність контенту", "Невідповідність контенту. Базовий: \"" + baselineText + "\", Тестуючий: \"" + testText + "\""));
         }
         return issues;
     }

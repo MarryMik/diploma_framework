@@ -9,14 +9,21 @@ public class Incompatibility {
     private DOMdifference detectedDifference;
     private String issueType;
     private String details;
+    private String subIssueType;
 
     public Incompatibility(String issueType) {
         this.issueType = issueType;
+        this.subIssueType= "немає";
     }
 
-    public Incompatibility(String issueType, String details) {
+    public Incompatibility(String issueType, String details, String subIssueType) {
         this.issueType = issueType;
         this.details = details;
+        this.subIssueType = subIssueType;
+    }
+
+    public String getSubIssueType() {
+        return subIssueType;
     }
 
     public String getIssueType() {
@@ -86,5 +93,9 @@ public class Incompatibility {
         WebDriver driver = detectedDifference.getVisDiff().getBaselineScreenshot().getDriver();
         Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
         return capabilities.getBrowserVersion();
+    }
+
+    public String getMethodName(){
+        return detectedDifference.getVisDiff().getMethodName();
     }
 }

@@ -148,7 +148,6 @@ public class Report {
         report.put("Дата і час", currentDateTime);
         // by browser
         for(List<Incompatibility> incBybrowser: incompatibilitiesByBrowser){
-            System.out.println("incBybrowser size = " + incBybrowser.size());
 
                 JSONObject browsers = new JSONObject();
                 browsers.put("Назва", incBybrowser.get(0).getBrowserName());

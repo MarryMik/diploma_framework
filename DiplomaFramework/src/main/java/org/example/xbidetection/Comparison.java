@@ -60,6 +60,11 @@ public class Comparison {
                     differences.addAll(testScreenshots.get(i).detectCBDbySSIM(baselineScreenshots.get(i)));
                 }
                 break;
+            case "combo":
+                for(int i =0; i < testScreenshots.size(); i++){
+                    differences.addAll(testScreenshots.get(i).detectCBDcombo(baselineScreenshots.get(i)));
+                }
+                break;
         }
         return differences;
    }

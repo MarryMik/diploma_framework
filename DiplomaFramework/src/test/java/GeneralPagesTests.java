@@ -137,6 +137,7 @@ public class GeneralPagesTests extends BaseTest{
     @Test
     public void detectXBIonAllPagesByPixels() throws IOException, JSONException {
         String methodName = "bypixel/";
+        String method = "pixels";
         Report report = new Report("All pages XBI detection","src/test/java/testdata/reports/reportPixels.json");
         String reportFilesPath = "src/test/java/testdata/reports/files/";
 
@@ -160,20 +161,20 @@ public class GeneralPagesTests extends BaseTest{
         Comparison comparison = new Comparison("GoogleChrome", "FireFox");
         comparison.setTestScreenshots(testingScreenshots);
         comparison.setBaselineScreenshots(baselineScreenshots);
-        List <VisualDifference> visualDifferences = comparison.compare("pixels");
+        List <VisualDifference> visualDifferences = comparison.compare(method);
         /////////////////////////
         log.info("Compare with screenshot from MicrosoftEdge");
         Comparison comparison2 = new Comparison("GoogleChrome", "MicrosoftEdge");
         comparison2.setTestScreenshots(testingScreenshots2);
         comparison2.setBaselineScreenshots(baselineScreenshots);
-        List <VisualDifference> visualDifferences2 = comparison2.compare("pixels");
+        List <VisualDifference> visualDifferences2 = comparison2.compare(method);
         /////////////////
         List<VisualDifference> allVissDifferences = new ArrayList<>();
         allVissDifferences.addAll(visualDifferences);
         allVissDifferences.addAll(visualDifferences2);
         /////////////////////////
 
-        log.info("Detect DOM differences (from FireFox)");
+        log.info("Detect DOM differences");
         List <DOMdifference> doMdifferences = new ArrayList<>();
         int j =0;
         for(VisualDifference visualDifference : allVissDifferences) {
@@ -182,7 +183,7 @@ public class GeneralPagesTests extends BaseTest{
             j++;
         }
         //////////////
-        log.info("Detect incompatibilities (From FireFox)");
+        log.info("Detect incompatibilities");
         List <Incompatibility> incompatibilities = new ArrayList<>();
         for(DOMdifference domDifference : doMdifferences) {
             List <Incompatibility> i = domDifference.detectXBI();
@@ -198,6 +199,7 @@ public class GeneralPagesTests extends BaseTest{
     @Test
     public void detectXBIonAllPagesBySSIM() throws IOException, JSONException {
         String methodName = "SSIM/";
+        String method = "SSIM";
         Report report = new Report("All pages XBI detection","src/test/java/testdata/reports/reportSSIM.json");
         String reportFilesPath = "src/test/java/testdata/reports/files/";
 
@@ -221,20 +223,20 @@ public class GeneralPagesTests extends BaseTest{
         Comparison comparison = new Comparison("GoogleChrome", "FireFox");
         comparison.setTestScreenshots(testingScreenshots);
         comparison.setBaselineScreenshots(baselineScreenshots);
-        List <VisualDifference> visualDifferences = comparison.compare("SSIM");
+        List <VisualDifference> visualDifferences = comparison.compare(method);
         /////////////////////////
         log.info("Compare with screenshot from MicrosoftEdge");
         Comparison comparison2 = new Comparison("GoogleChrome", "MicrosoftEdge");
         comparison2.setTestScreenshots(testingScreenshots2);
         comparison2.setBaselineScreenshots(baselineScreenshots);
-        List <VisualDifference> visualDifferences2 = comparison2.compare("SSIM");
+        List <VisualDifference> visualDifferences2 = comparison2.compare(method);
         /////////////////
         List<VisualDifference> allVissDifferences = new ArrayList<>();
         allVissDifferences.addAll(visualDifferences);
         allVissDifferences.addAll(visualDifferences2);
         /////////////////////////
 
-        log.info("Detect DOM differences (from FireFox)");
+        log.info("Detect DOM differences");
         List <DOMdifference> doMdifferences = new ArrayList<>();
         int j =0;
         for(VisualDifference visualDifference : allVissDifferences) {
@@ -243,7 +245,7 @@ public class GeneralPagesTests extends BaseTest{
             j++;
         }
         //////////////
-        log.info("Detect incompatibilities (From FireFox)");
+        log.info("Detect incompatibilities");
         List <Incompatibility> incompatibilities = new ArrayList<>();
         for(DOMdifference domDifference : doMdifferences) {
             List <Incompatibility> i = domDifference.detectXBI();
@@ -256,4 +258,68 @@ public class GeneralPagesTests extends BaseTest{
         report.saveReport();
         report.showReport();
     }
+
+    @Test
+    public void detectXBIonAllPagesByCombo() throws IOException, JSONException {
+        String methodName = "combo/";
+        String method = "combo";
+        Report report = new Report("All pages XBI detection","src/test/java/testdata/reports/reportCombo.json");
+        String reportFilesPath = "src/test/java/testdata/reports/files/";
+
+        log.info("Google Chrome");
+        driver1.get(baseUrl);
+        String baselineScreenshotName = report.getNumber()+"_GC_baseline.png";
+        List<Screenshot> baselineScreenshots = takeScreenshots(driver1,reportFilesPath,baselineScreenshotName, methodName);
+
+        log.info("FireFox");
+        driver2.get(baseUrl);
+        String testingScreenshotName = report.getNumber()+"_FF_testing.png";
+        List<Screenshot> testingScreenshots = takeScreenshots(driver2,reportFilesPath,testingScreenshotName, methodName);
+
+        log.info("MicrosoftEdge");
+        driver3.get(baseUrl);
+        String testingScreenshotName2 = report.getNumber()+"_ME_testing.png";
+        List<Screenshot> testingScreenshots2 = takeScreenshots(driver3,reportFilesPath,testingScreenshotName2, methodName);
+
+        log.info("Compare baseline screenshots to testing screenshot");
+        log.info("Compare with screenshot from FireFox");
+        Comparison comparison = new Comparison("GoogleChrome", "FireFox");
+        comparison.setTestScreenshots(testingScreenshots);
+        comparison.setBaselineScreenshots(baselineScreenshots);
+        List <VisualDifference> visualDifferences = comparison.compare(method);
+        /////////////////////////
+        log.info("Compare with screenshot from MicrosoftEdge");
+        Comparison comparison2 = new Comparison("GoogleChrome", "MicrosoftEdge");
+        comparison2.setTestScreenshots(testingScreenshots2);
+        comparison2.setBaselineScreenshots(baselineScreenshots);
+        List <VisualDifference> visualDifferences2 = comparison2.compare(method);
+        /////////////////
+        List<VisualDifference> allVissDifferences = new ArrayList<>();
+        allVissDifferences.addAll(visualDifferences);
+        allVissDifferences.addAll(visualDifferences2);
+        /////////////////////////
+
+        log.info("Detect DOM differences");
+        List <DOMdifference> doMdifferences = new ArrayList<>();
+        int j =0;
+        for(VisualDifference visualDifference : allVissDifferences) {
+            DOMdifference domDiff = visualDifference.detectDOMDifference();
+            doMdifferences.add(domDiff);
+            j++;
+        }
+        //////////////
+        log.info("Detect incompatibilities");
+        List <Incompatibility> incompatibilities = new ArrayList<>();
+        for(DOMdifference domDifference : doMdifferences) {
+            List <Incompatibility> i = domDifference.detectXBI();
+            incompatibilities.addAll(i);
+        }
+        /////////////
+        log.info("create report");
+        report.addIncompatibilities(incompatibilities);
+        report.createReport();
+        report.saveReport();
+        report.showReport();
+    }
+
 }

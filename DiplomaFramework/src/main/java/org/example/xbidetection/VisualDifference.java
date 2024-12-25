@@ -63,7 +63,7 @@ public class VisualDifference {
 
     private String classifyDifference(Rect rect){
         if (rect.width * rect.height > 10000) {
-            return "Велика роблема з макетом";
+            return "Велика проблема з макетом";
         } else if (rect.width > rect.height) {
             return "Проблема горизонтального вирівнювання";
         } else if (rect.height > rect.width) {

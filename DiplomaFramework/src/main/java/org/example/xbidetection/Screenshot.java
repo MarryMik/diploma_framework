@@ -71,38 +71,16 @@ public class Screenshot {
     }
 
     public List<VisualDifference> detectCBDbyPixels(Screenshot scr2){
-        //зчитування скріншотів
         Mat baselineImage = Imgcodecs.imread(scr2.getPath());
         Mat testImage = Imgcodecs.imread(path);
-        //коригування розміру зображень
         List<Mat> resizedScreenshots = resizeScreenshots(baselineImage, testImage);
         baselineImage = resizedScreenshots.get(0);
         testImage = resizedScreenshots.get(1);
-        // Перетворення зображень у зображення з сірими відтінками
         Mat baselineGray = new Mat();
         Mat testGray = new Mat();
         Imgproc.cvtColor(baselineImage, baselineGray, Imgproc.COLOR_BGR2GRAY);
         Imgproc.cvtColor(testImage, testGray, Imgproc.COLOR_BGR2GRAY);
-        // Підрахунок абсолютної різниці
-//        Mat diff = new Mat();
-//        Core.absdiff(baselineGray, testGray, diff);
-        // Бінаризація різниці
-//        Mat thresholded = new Mat();
-//        Imgproc.threshold(diff, thresholded, 50, 255, Imgproc.THRESH_BINARY);
         Mat thresholded = calculateAbsoluteDiff(baselineGray, testGray, 50);
-        // пошук контурів
-//        List<MatOfPoint> contours = new ArrayList<>();
-//        Mat hierarchy = new Mat();
-//        Imgproc.findContours(thresholded, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-//
-//        // витягнення обмежувальних рамок
-//        List<VisualDifference> visualDiffs = new ArrayList<>();
-//        for (MatOfPoint contour : contours) {
-//            Rect boundingBox = Imgproc.boundingRect(contour);
-//            VisualDifference vd = new VisualDifference(this, scr2, boundingBox);
-//            vd.setMethodName("bypixel");
-//            visualDiffs.add(vd);
-//        }
         return detectVissDiff(thresholded,scr2,"bypixel" );
     }
 
@@ -156,19 +134,6 @@ public class Screenshot {
         Mat thresholdMap = new Mat();
         Imgproc.threshold(normalizedSSIM, thresholdMap, 200, 255, Imgproc.THRESH_BINARY_INV);
 
-        // Знаходження контурів несумісностей
-//        List<MatOfPoint> contours = new ArrayList<>();
-//        Mat hierarchy = new Mat();
-//        Imgproc.findContours(thresholdMap, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-//
-//        // Виведення координат та побудова прямокутників
-//        List<VisualDifference> visualDiffs = new ArrayList<>();
-//        for (MatOfPoint contour : contours) {
-//            Rect boundingBox = Imgproc.boundingRect(contour);
-//            VisualDifference vd = new VisualDifference(this, scr2, boundingBox);
-//            vd.setMethodName("SSIM");
-//            visualDiffs.add(vd);
-//        }
         return detectVissDiff(thresholdMap, scr2, "SSIM");
     }
 

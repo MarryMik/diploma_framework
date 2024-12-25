@@ -15,13 +15,6 @@ import static org.example.utils.Utils.sleep;
 public class NewPagesTests extends BaseTest{
     private static final Logger log = Logger.getLogger(NewPagesTests.class);
 
-//    WebDriver driver = new ChromeDriver();
-//
-//    // Встановлення розміру вікна
-//        driver.manage().window().setSize(new Dimension(800, 600));
-//
-//    // Відкриття сторінки
-//        driver.get("https://example.com");
     @Test
     public void detectXBITest() throws IOException, JSONException{
         String methodName = "SSIM/";
@@ -125,16 +118,6 @@ public class NewPagesTests extends BaseTest{
         }
         log.info("DOM size "+doMdifferences.size());
 
-//        log.info("Detect DOM differences (from MicrosoftEdge)");
-//        List <DOMdifference> doMdifferences2 = new ArrayList<>();
-//        j =0;
-//        for(VisualDifference visualDifference : visualDifferences2) {
-//            DOMdifference domDiff = visualDifference.detectDOMDifference();
-//            doMdifferences2.add(domDiff);
-//            j++;
-//        }
-//        log.info("DOM size "+doMdifferences2.size());
-
         log.info("Detect incompatibilities (From FireFox)");
         List <Incompatibility> incompatibilities = new ArrayList<>();
         for(DOMdifference domDifference : doMdifferences) {
@@ -142,16 +125,8 @@ public class NewPagesTests extends BaseTest{
             incompatibilities.addAll(i);
         }
 
-//        log.info("Detect incompatibilities (From MicrosoftEdge)");
-//        List <Incompatibility> incompatibilities2 = new ArrayList<>();
-//        for(DOMdifference domDifference : doMdifferences2) {
-//            List <Incompatibility> i = domDifference.detectXBI();
-//            incompatibilities2.addAll(i);
-//        }
-
         log.info("create report");
         report.addIncompatibilities(incompatibilities);
-//        report.addIncompatibilities(incompatibilities2);
         report.createReport();
         report.saveReport();
         report.showReport();

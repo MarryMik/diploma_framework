@@ -31,7 +31,6 @@ public class TeethdiaryPage extends BasePage{
 
 
     IUserInfoReader fileReader = new JsonFileReader();
-    //UserInfo userDoctorInfo = fileReader.readUserInfo("src/test/java/testdata/jsonfiles/userDoctorTestData.json");
     DoctorInfo userDoctorInfo = fileReader.readDoctorInfo("src/test/java/testdata/jsonfiles/userDoctorTestData.json");
 
     public TeethdiaryPage() {}

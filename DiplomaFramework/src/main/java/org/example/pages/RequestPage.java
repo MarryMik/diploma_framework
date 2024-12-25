@@ -28,17 +28,10 @@ public class RequestPage extends BasePage{
     DoctorInfo userDoctorInfo = fileReader.readDoctorInfo("src/test/java/testdata/jsonfiles/userDoctorTestData.json");
     private static final Logger log = Logger.getLogger(RequestPage.class);
 
-    //IProductInfoReader fileReader = new JsonFileReader();
-    //ProductInfo productInfo = fileReader.readProductInfo("src/test/java/testdata/productTestData.json");
 
     public RequestPage() {}
 
     public void fillRequestInputsAndSearchDoctors() {
-        log.info("userName"+userPatientInfo.getUserName());
-        log.info("userPhone"+userPatientInfo.getUserPhone());
-        log.info("doctorName"+userPatientInfo.getUserName());
-        log.info("doctorPhone"+userDoctorInfo.getUserPhone());
-        log.info("doctorAddress"+userDoctorInfo.getAddress());
         driver.findElement(By.id(requestNameInputId)).sendKeys(userPatientInfo.getUserName());
         driver.findElement(By.id(requestPhoneInputId)).sendKeys(userPatientInfo.getUserPhone());
         driver.findElement(By.id(requestDoctorNameInputId)).sendKeys(userDoctorInfo.getUserName());

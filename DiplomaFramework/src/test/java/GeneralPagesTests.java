@@ -314,7 +314,6 @@ public class GeneralPagesTests extends BaseTest{
             List <Incompatibility> i = domDifference.detectXBI();
             incompatibilities.addAll(i);
         }
-        /////////////
         log.info("create report");
         report.addIncompatibilities(incompatibilities);
         report.createReport();

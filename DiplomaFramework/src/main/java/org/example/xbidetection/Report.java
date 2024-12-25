@@ -22,7 +22,6 @@ public class Report {
     private String name;
     private JSONObject report;
     private Integer number;
-    //private String pathReport = "src/test/java/testdata/reports/report.json";
     private String pathReport;
     private List<Incompatibility> incompatibilities;
     private List<List<Incompatibility>> incompatibilitiesByBrowser;
@@ -236,19 +235,6 @@ public class Report {
                     webElementsXBI.put("Кількість ХВІ з елементом '"+uniqueElement+"'",count);
                 }
                 pages.put("Веб елементи", webElementsXBI);
-
-                //details
-//                JSONObject detailsXBI = new JSONObject();
-//                Set<String> uniqueDetails = incByPage.stream()
-//                        .map(xbi -> xbi.getDetails())
-//                        .collect(Collectors.toSet());
-//                for(String uniqueDetail : uniqueDetails){
-//                    long count = incByPage.stream()
-//                            .filter( xbi -> xbi.getDetails().equals(uniqueDetail))
-//                            .count();
-//                    detailsXBI.put("Кількість ХВІ з '"+uniqueDetail+"'",count);
-//                }
-//                pages.put("Деталі", detailsXBI);
 
                 // visdiff type
                 JSONObject visualDiffType = new JSONObject();
